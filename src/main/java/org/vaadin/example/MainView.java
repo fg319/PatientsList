@@ -29,35 +29,44 @@ import java.util.List;
 
 
 @Route
-@PWA(name = "Vaadin Application", shortName = "Vaadin App", description = "This is an example Vaadin application.",
-        enableInstallPrompt = false)
+@PWA(name = "Vaadin Application", shortName = "Vaadin App", description = "This is an example Vaadin application."
+        )
 @CssImport("./styles/shared-styles.css")
 @CssImport(value = "./styles/vaadin-text-field-styles.css", themeFor = "vaadin-text-field")
-
 public class MainView extends VerticalLayout {
 
     Grid<Patient> patientList = new Grid(Patient.class);
     TextField searchInput = new TextField();
     PatientService patientService;
     Patient patient;
+    List<Patient> patients;
     ArrayList<String> givenName = new ArrayList<String>();
 
-
-
     public MainView(PatientService patientService) throws Exception {
-
+        this.patient=patient;
+        this.patientService = patientService;
+        patients = patientService.GetList(patient);
         setSizeFull();
-        ConfigureGrid();
-        //patientList.addColumn(patient->patient.GetFName()).setHeader("FamilyName");
-        //patientList.addColumn(patient -> patient.GetDate()).setHeader("AdmissionDate");}
+        //patientList.setItems(patients);
 
-        add(getToolbar());
+        ConfigureGrid();
+        add(getToolbar(),patientList);
+        ///display();
+
     }
+
+
+    /*private void display() throws Exception {
+        patientList.setItems(patientService.GetList());
+    }*/
 
     private void ConfigureGrid() {
         patientList.setSizeFull();
-        patientList.setColumns("givenname", "familyname", "admissiondate");
-        //patientList.addColumn(patient -> patient.getgName()).setHeader("givenname");
+        //patientList.setColumns("familyname", "givenname", "admissiondate");
+        //patientList.addColumn(Patient::getgName).setHeader("givenname");
+        //patientList.addColumn(Patient::getfName).setHeader("FamilyName");
+        //patientList.addColumn(Patient::getDate).setHeader("AdmissionDate");
+        //patientList.addColumn(patient->patient.getgName()).setHeader("givenname");
         //patientList.addColumn(patient -> patient.getfName()).setHeader("Company");
         patientList.getColumns().forEach(col -> col.setAutoWidth(true));
 
