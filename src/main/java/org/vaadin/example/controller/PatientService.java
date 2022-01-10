@@ -20,7 +20,7 @@ public class PatientService {
     Patient patient;
 
     public PatientService() throws Exception {
-        Patient patient= new Patient();
+        Patient patient= new Patient("","","");
         GetList(patient);
     }
 

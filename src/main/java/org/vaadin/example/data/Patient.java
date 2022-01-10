@@ -20,11 +20,11 @@ public class Patient {
     private String givenname="";
     private String admissiondate="";
 
-    /*public Patient(String familyname, String givenname, String admissiondate){
+    public Patient(String familyname, String givenname, String admissiondate){
         this.familyname = familyname;
         this.givenname = givenname;
         this.admissiondate = admissiondate;
-    }*/
+    }
 
     public Long getId() {
         return id;
@@ -35,9 +35,7 @@ public class Patient {
     }
 
 
-    public String getfName() {
-        return familyname;
-    }
+    public String getfName() {return familyname;}
     public void setfName(String familyName) {
         this.familyname = familyName;
     }
