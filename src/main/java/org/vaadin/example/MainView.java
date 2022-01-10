@@ -42,12 +42,14 @@ public class MainView extends VerticalLayout {
     List<Patient> patients;
     ArrayList<String> givenName = new ArrayList<String>();
 
-    public MainView(PatientService patientService) throws Exception {
+
+    public MainView(PatientService patientService, Patient patient) throws Exception {
         this.patient=patient;
         this.patientService = patientService;
         patients = patientService.GetList(patient);
         setSizeFull();
-        //patientList.setItems(patients);
+
+        patientList.setItems(patients);
 
         ConfigureGrid();
         add(getToolbar(),patientList);

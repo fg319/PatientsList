@@ -1,5 +1,7 @@
 package org.vaadin.example.data;
 
+import org.springframework.stereotype.Service;
+
 import javax.persistence.*;
 import javax.validation.constraints.NotEmpty;
 import java.sql.Connection;
@@ -10,7 +12,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 //@Table(name = "patients")
-//@Entity
+@Service
 public class Patient {
 
     private Long id;
@@ -20,11 +22,6 @@ public class Patient {
     private String givenname="";
     private String admissiondate="";
 
-    public Patient(String familyname, String givenname, String admissiondate){
-        this.familyname = familyname;
-        this.givenname = givenname;
-        this.admissiondate = admissiondate;
-    }
 
     public Long getId() {
         return id;
