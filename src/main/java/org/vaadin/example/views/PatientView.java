@@ -1,32 +1,18 @@
 package org.vaadin.example.views;
 
-import com.vaadin.flow.component.Key;
-import com.vaadin.flow.component.avatar.AvatarGroup;
-import com.vaadin.flow.component.button.Button;
-import com.vaadin.flow.component.button.ButtonVariant;
+
 import com.vaadin.flow.component.dependency.CssImport;
 import com.vaadin.flow.component.grid.Grid;
-import com.vaadin.flow.component.notification.Notification;
 import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
 import com.vaadin.flow.component.orderedlayout.VerticalLayout;
 import com.vaadin.flow.component.textfield.TextField;
-import com.vaadin.flow.data.renderer.Renderer;
-import com.vaadin.flow.data.value.ValueChangeMode;
-import com.vaadin.flow.function.ValueProvider;
 import com.vaadin.flow.router.PageTitle;
 import com.vaadin.flow.router.Route;
 import com.vaadin.flow.server.PWA;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Component;
 import org.vaadin.example.controller.PatientService;
 import org.vaadin.example.data.Patient;
 
 import javax.annotation.security.PermitAll;
-import java.sql.Connection;
-import java.sql.DriverManager;
-import java.sql.ResultSet;
-import java.sql.Statement;
-import java.util.ArrayList;
 import java.util.List;
 
 
@@ -65,10 +51,11 @@ public class PatientView extends VerticalLayout {
 
     private void ConfigureGrid() {
         patientList.setSizeFull();
-        patientList.addColumn(Patient::getId).setHeader("Patient ID");
-        patientList.addColumn(Patient::getgName).setHeader("Given Name");
-        patientList.addColumn(Patient::getfName).setHeader("Family Name");
+        patientList.addColumn(Patient::getName).setHeader("Patient Name");
+        patientList.addColumn(Patient::getPatientId).setHeader("Patient ID");
         patientList.addColumn(Patient::getDate).setHeader("Admission Date");
+        patientList.addColumn(Patient::getroom).setHeader("Room Number");
+        patientList.addColumn(Patient::getCondition).setHeader("Condition");
         patientList.getColumns().forEach(col -> col.setAutoWidth(true));
 
     }

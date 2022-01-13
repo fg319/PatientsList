@@ -14,10 +14,10 @@ public class MainLayout extends AppLayout {
 
     public MainLayout(){
         createHeader();
-        createrDrawer();
+        createDrawer();
     }
 
-    private void createrDrawer() {
+    private void createDrawer() {
         RouterLink listLink = new RouterLink("Patient List", PatientView.class);
         listLink.setHighlightCondition(HighlightConditions.sameLocation());
 
