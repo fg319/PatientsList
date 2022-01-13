@@ -1,12 +1,7 @@
 package org.vaadin.example.controller;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import org.springframework.web.bind.annotation.*;
 import org.vaadin.example.data.Patient;
-
-
-import javax.validation.Valid;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.ResultSet;
@@ -16,17 +11,18 @@ import java.util.*;
 @Service
 public class PatientService {
 
-    List<Patient> patients;
-    Patient patient;
-
-    public PatientService() throws Exception {
-
-
+    public Patient createP(String PatientName, String room, String admissionDate, Long PatientId, String Condition){
+        Patient patient = new Patient();
+        patient.setName(PatientName);
+        patient.setroom(room);
+        patient.setDate(admissionDate);
+        patient.setPatientid(PatientId);
+        patient.setCondition(Condition);
+        return patient;
     }
 
     public List<Patient> GetList() throws Exception {
         Patient patient;
-        //this.patient=patient;
         ArrayList<Patient>patients1= new ArrayList<>();
         List<String> room = GetRoom();
         List<String> PatientName = GetName();
@@ -41,14 +37,20 @@ public class PatientService {
         return patients1;
     }
 
-    public Patient createP(String PatientName, String room, String admissionDate, Long PatientId, String Condition){
-        Patient patient = new Patient();
-        patient.setName(PatientName);
-        patient.setroom(room);
-        patient.setDate(admissionDate);
-        patient.setPatientid(PatientId);
-        patient.setCondition(Condition);
-        return patient;
+    public List<Patient> search(String searchInput) throws Exception {        // This fucntion was taken from https://www.baeldung.com/find-list-element-java
+        List<Patient> patients = GetList();
+        ArrayList<Patient> patientUpdated = new ArrayList<>();
+        if(searchInput == null || searchInput.isEmpty()){
+            return patients;
+        }else {
+            for (Patient patient : patients){
+                if(patient.getName().equals(searchInput)){
+                    patientUpdated.add(patient);
+                }
+            }
+            return patientUpdated;
+        }
+
     }
 
     public ResultSet getData(String query) throws Exception{

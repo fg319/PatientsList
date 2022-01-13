@@ -1,22 +1,26 @@
 package org.vaadin.example.views;
 
 
+import com.vaadin.flow.component.UI;
 import com.vaadin.flow.component.dependency.CssImport;
 import com.vaadin.flow.component.grid.Grid;
 import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
 import com.vaadin.flow.component.orderedlayout.VerticalLayout;
 import com.vaadin.flow.component.textfield.TextField;
+import com.vaadin.flow.data.value.ValueChangeMode;
 import com.vaadin.flow.router.PageTitle;
 import com.vaadin.flow.router.Route;
+import com.vaadin.flow.router.RouterLink;
 import com.vaadin.flow.server.PWA;
 import org.vaadin.example.controller.PatientService;
 import org.vaadin.example.data.Patient;
 
 import javax.annotation.security.PermitAll;
 import java.util.List;
+import java.util.Optional;
 
 
-@Route(value="", layout=MainLayout.class)
+@Route(value="Patients_List", layout=MainLayout.class)
 @PWA(name = "Vaadin Application", shortName = "Vaadin App", description = "This is an example Vaadin application."
         )
 @CssImport("./styles/shared-styles.css")
@@ -35,19 +39,31 @@ public class PatientView extends VerticalLayout {
     public PatientView(PatientService patientService) throws Exception {
         this.patientService = patientService;
         patients = patientService.GetList();
+
         setSizeFull();
         patientList.setItems(patients);
-
         ConfigureGrid();
         add(getToolbar(),patientList);
-        ///display();
+        getLivePlot();
+        //searchPatient();
 
     }
 
+    private void getLivePlot() {  //From https://vaadin.com/docs/v14/ds/components/grid
+        patientList.addSelectionListener(selectionEvent -> {
+            Optional<Patient> optionalPatient = selectionEvent.getFirstSelectedItem();
+            if(optionalPatient.isPresent()){
+               // new RouterLink("Live Plots", LivePlots.class);
+                UI.getCurrent().getPage().executeJavaScript("window.open(\"http://localhost:8080/Live_Plots\", \"_self\");");
+            }
 
-    /*private void display() throws Exception {
-        patientList.setItems(patientService.GetList());
-    }*/
+        });
+    }
+
+    private void searchPatient() throws Exception {
+        patientList.setItems(patientService.search(searchInput.getValue()));
+    }
+
 
     private void ConfigureGrid() {
         patientList.setSizeFull();
@@ -57,21 +73,25 @@ public class PatientView extends VerticalLayout {
         patientList.addColumn(Patient::getroom).setHeader("Room Number");
         patientList.addColumn(Patient::getCondition).setHeader("Condition");
         patientList.getColumns().forEach(col -> col.setAutoWidth(true));
-
     }
 
-
-    private HorizontalLayout getToolbar() {
+    private HorizontalLayout getToolbar() {  //Vaadin tutorial
         searchInput.setPlaceholder("search patient");
         searchInput.setClearButtonVisible(true);
+        searchInput.setValueChangeMode(ValueChangeMode.LAZY);
+        searchInput.addValueChangeListener(e -> {
+            try {
+                searchPatient();
+            } catch (Exception ex) {
+                ex.printStackTrace();
+            }
+        });
 
         HorizontalLayout toolbar = new HorizontalLayout(searchInput);
         toolbar.addClassName("toolbar");
         return toolbar;
 
     }
-
-
 
 }
 
