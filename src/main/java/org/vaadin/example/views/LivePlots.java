@@ -2,26 +2,24 @@ package org.vaadin.example.views;
 
 
 import com.vaadin.flow.component.Component;
-import com.vaadin.flow.component.applayout.DrawerToggle;
-import com.vaadin.flow.component.html.H1;
-import com.vaadin.flow.component.html.H2;
 import com.vaadin.flow.component.html.H3;
 import com.vaadin.flow.component.orderedlayout.FlexComponent;
 import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
 import com.vaadin.flow.component.orderedlayout.VerticalLayout;
-import com.vaadin.flow.router.PageTitle;
-import com.vaadin.flow.router.Route;
 
 import javax.annotation.security.PermitAll;
 
-@Route(value = "Live_Plots", layout= MainLayout.class) //not sure about value part
-@PageTitle("Live Plots | Doctor's Interface")
+//@Route(value = "Live_Plots", layout= MainLayout.class) //not sure about value part
+//@PageTitle("Live Plots | Doctor's Interface")
 
 @PermitAll
-public class LivePlots extends VerticalLayout{
+public class LivePlots  extends VerticalLayout {
+
+
 
     public LivePlots(){
         add(createHeader());
+        //plot.initDemo();
     }
 
     private Component createHeader() {
@@ -39,4 +37,5 @@ public class LivePlots extends VerticalLayout{
     return header;
         //addToNavbar(header);
     }
+
 }
