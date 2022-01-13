@@ -1,6 +1,5 @@
-package org.vaadin.example;
+package org.vaadin.example.views;
 
-import com.vaadin.flow.component.Component;
 import com.vaadin.flow.component.Key;
 import com.vaadin.flow.component.avatar.AvatarGroup;
 import com.vaadin.flow.component.button.Button;
@@ -14,12 +13,15 @@ import com.vaadin.flow.component.textfield.TextField;
 import com.vaadin.flow.data.renderer.Renderer;
 import com.vaadin.flow.data.value.ValueChangeMode;
 import com.vaadin.flow.function.ValueProvider;
+import com.vaadin.flow.router.PageTitle;
 import com.vaadin.flow.router.Route;
 import com.vaadin.flow.server.PWA;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 import org.vaadin.example.controller.PatientService;
 import org.vaadin.example.data.Patient;
 
+import javax.annotation.security.PermitAll;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.ResultSet;
@@ -28,27 +30,26 @@ import java.util.ArrayList;
 import java.util.List;
 
 
-@Route
+@Route(value="", layout=MainLayout.class)
 @PWA(name = "Vaadin Application", shortName = "Vaadin App", description = "This is an example Vaadin application."
         )
 @CssImport("./styles/shared-styles.css")
 @CssImport(value = "./styles/vaadin-text-field-styles.css", themeFor = "vaadin-text-field")
-public class MainView extends VerticalLayout {
+@PermitAll
+@PageTitle("Patients List")
+public class PatientView extends VerticalLayout {
 
-    Grid<Patient> patientList = new Grid(Patient.class);
+    Grid<Patient> patientList = new Grid(Patient.class, false);
     TextField searchInput = new TextField();
     PatientService patientService;
-    Patient patient;
     List<Patient> patients;
-    ArrayList<String> givenName = new ArrayList<String>();
 
 
-    public MainView(PatientService patientService, Patient patient) throws Exception {
-        this.patient=patient;
+
+    public PatientView(PatientService patientService) throws Exception {
         this.patientService = patientService;
-        patients = patientService.GetList(patient);
+        patients = patientService.GetList();
         setSizeFull();
-
         patientList.setItems(patients);
 
         ConfigureGrid();
@@ -64,12 +65,10 @@ public class MainView extends VerticalLayout {
 
     private void ConfigureGrid() {
         patientList.setSizeFull();
-        //patientList.setColumns("familyname", "givenname", "admissiondate");
-        //patientList.addColumn(Patient::getgName).setHeader("givenname");
-        //patientList.addColumn(Patient::getfName).setHeader("FamilyName");
-        //patientList.addColumn(Patient::getDate).setHeader("AdmissionDate");
-        //patientList.addColumn(patient->patient.getgName()).setHeader("givenname");
-        //patientList.addColumn(patient -> patient.getfName()).setHeader("Company");
+        patientList.addColumn(Patient::getId).setHeader("Patient ID");
+        patientList.addColumn(Patient::getgName).setHeader("Given Name");
+        patientList.addColumn(Patient::getfName).setHeader("Family Name");
+        patientList.addColumn(Patient::getDate).setHeader("Admission Date");
         patientList.getColumns().forEach(col -> col.setAutoWidth(true));
 
     }

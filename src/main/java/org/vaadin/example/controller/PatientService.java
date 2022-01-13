@@ -4,7 +4,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.*;
 import org.vaadin.example.data.Patient;
-import org.vaadin.example.repository.PatientRepository;
+
 
 import javax.validation.Valid;
 import java.sql.Connection;
@@ -20,24 +20,33 @@ public class PatientService {
     Patient patient;
 
     public PatientService() throws Exception {
-        Patient patient= new Patient();
-        GetList(patient);
+
+
     }
 
-    public List<Patient> GetList(Patient patient) throws Exception {
-        this.patient=patient;
+    public List<Patient> GetList() throws Exception {
+        Patient patient;
+        //this.patient=patient;
         ArrayList<Patient>patients1= new ArrayList<>();
         List<String> givenName = GetGName();
         List<String> familyName = GetFName();
         List<String> admissionDate =GetDate();
+        List<Integer> PatientId= GetId();
 
         for(int i = 0; i < givenName.size(); i++){
-            patient.setgName(givenName.get(i));
-            patient.setfName(familyName.get(i));
-            patient.setDate(admissionDate.get(i));
+            patient = createP(familyName.get(i),givenName.get(i),admissionDate.get(i), PatientId.get(i));
             patients1.add(patient);
         }
         return patients1;
+    }
+
+    public Patient createP(String familyName, String givenName, String admissionDate, Integer PatientId){
+        Patient patient = new Patient();
+        patient.setgName(givenName);
+        patient.setfName(familyName);
+        patient.setDate(admissionDate);
+        patient.setId(PatientId);
+        return patient;
     }
 
     public ResultSet getData(String query) throws Exception{
@@ -55,9 +64,7 @@ public class PatientService {
 
         while(rs.next()) {
             FirstName.add(rs.getString("familyname"));
-            if(rs.getString("familyname") == null){
-                FirstName.add("not working");
-            }
+
         }
         return FirstName;
     }
@@ -69,9 +76,7 @@ public class PatientService {
 
         while(rs.next()) {
             GivenName.add(rs.getString("givenname"));
-            if(rs.getString("givenname") == null){
-                GivenName.add("not working");
-            }
+
         }
         return GivenName;
     }
@@ -83,10 +88,18 @@ public class PatientService {
 
         while(rs.next()) {
             AdmissionDate.add(rs.getString("admissiondate"));
-            if(rs.getString("AdmissionDate") == null){
-                AdmissionDate.add("not working");
-            }
         }
         return AdmissionDate;
+    }
+
+    public List<Integer> GetId() throws Exception {
+        ArrayList<Integer> PatientId = new ArrayList();
+
+        ResultSet rs = getData("Select * from patients");
+
+        while(rs.next()) {
+            PatientId.add(rs.getInt("id"));
+        }
+        return PatientId;
     }
 }
