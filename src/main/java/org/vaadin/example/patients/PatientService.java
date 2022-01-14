@@ -1,7 +1,6 @@
-package org.vaadin.example.controller;
+package org.vaadin.example.patients;
 
 import org.springframework.stereotype.Service;
-import org.vaadin.example.data.Patient;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.ResultSet;
@@ -11,6 +10,7 @@ import java.util.*;
 @Service
 public class PatientService {
 
+    //This function allows to create an object of class Patient with the data obtained from the postgresql database
     public Patient createP(String PatientName, String room, String admissionDate, Long PatientId, String Condition){
         Patient patient = new Patient();
         patient.setName(PatientName);
@@ -21,6 +21,7 @@ public class PatientService {
         return patient;
     }
 
+    //This function creates a list of patients created with the data from the database
     public List<Patient> GetList() throws Exception {
         Patient patient;
         ArrayList<Patient>patients1= new ArrayList<>();
@@ -30,13 +31,15 @@ public class PatientService {
         List<Long> PatientId= GetId();
         List<String> Condition = GetCondition();
 
-        for(int i = 0; i < PatientName.size(); i++){
+        for(int i = 0; i < PatientName.size(); i++){ //this loop runs through the list of data obtained from the datavase
+            //and creates a patient for every value obtained
             patient = createP(PatientName.get(i),room.get(i),admissionDate.get(i), PatientId.get(i),Condition.get(i));
             patients1.add(patient);
         }
         return patients1;
     }
 
+    //This function allows to search for a specific patient with an input from the user
     public List<Patient> search(String searchInput) throws Exception {        // This fucntion was taken from https://www.baeldung.com/find-list-element-java
         List<Patient> patients = GetList();
         ArrayList<Patient> patientUpdated = new ArrayList<>();
@@ -53,6 +56,7 @@ public class PatientService {
 
     }
 
+    //the following connect to the database and collect all the columns of the patients table and stored them in lists
     public ResultSet getData(String query) throws Exception{
         String dbUrl = "jdbc:postgresql://ec2-54-73-68-39.eu-west-1.compute.amazonaws.com:5432/dctpppdsoogu5e";
         Class.forName("org.postgresql.Driver");

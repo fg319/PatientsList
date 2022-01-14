@@ -1,16 +1,20 @@
 package org.vaadin.example;
 
+import com.vaadin.flow.component.dependency.NpmPackage;
+
+import com.vaadin.flow.theme.Theme;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
-import org.springframework.boot.autoconfigure.domain.EntityScan;
 import org.springframework.boot.web.servlet.support.SpringBootServletInitializer;
-import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
+
 
 /**
  * The entry point of the Spring Boot application.
  */
+
 @SpringBootApplication
-public class Application extends SpringBootServletInitializer {
+@NpmPackage(value = "line-awesome", version = "1.3.0")
+public class Application extends SpringBootServletInitializer  {
 
     public static void main(String[] args) {
 

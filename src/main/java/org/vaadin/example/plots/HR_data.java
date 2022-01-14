@@ -12,6 +12,7 @@ public class HR_data {
         Connection conn = DriverManager.getConnection(dbUrl, "wtlubuspzbefzf", "6056c0cef2cfcbf15902982f17d7ba4a19158dd1087ecb110fce1aade0e0629b");
         Statement stmt = conn.createStatement();
         return stmt.executeQuery(query);
+
     }
     public List<Integer> GetHR() throws Exception {
         ArrayList<Integer> HeartRate = new ArrayList();

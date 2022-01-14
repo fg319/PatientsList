@@ -10,10 +10,9 @@ import com.vaadin.flow.component.textfield.TextField;
 import com.vaadin.flow.data.value.ValueChangeMode;
 import com.vaadin.flow.router.PageTitle;
 import com.vaadin.flow.router.Route;
-import com.vaadin.flow.router.RouterLink;
 import com.vaadin.flow.server.PWA;
-import org.vaadin.example.controller.PatientService;
-import org.vaadin.example.data.Patient;
+import org.vaadin.example.patients.PatientService;
+import org.vaadin.example.patients.Patient;
 
 import javax.annotation.security.PermitAll;
 import java.util.List;
@@ -21,15 +20,13 @@ import java.util.Optional;
 
 
 @Route(value="Patients_List", layout=MainLayout.class)
-@PWA(name = "Vaadin Application", shortName = "Vaadin App", description = "This is an example Vaadin application."
-        )
 @CssImport("./styles/shared-styles.css")
 @CssImport(value = "./styles/vaadin-text-field-styles.css", themeFor = "vaadin-text-field")
 @PermitAll
 @PageTitle("Patients List")
 public class PatientView extends VerticalLayout {
 
-    Grid<Patient> patientList = new Grid(Patient.class, false);
+    Grid<Patient> patientList = new Grid(Patient.class, false);  //vaadin component that allows to create table of patients
     TextField searchInput = new TextField();
     PatientService patientService;
     List<Patient> patients;
@@ -38,7 +35,7 @@ public class PatientView extends VerticalLayout {
 
     public PatientView(PatientService patientService) throws Exception {
         this.patientService = patientService;
-        patients = patientService.GetList();
+        patients = patientService.GetList(); //List of patients obtained from database
 
         setSizeFull();
         patientList.setItems(patients);
@@ -49,17 +46,18 @@ public class PatientView extends VerticalLayout {
 
     }
 
+    //When patient is selected we get redirected to Live Plot page
     private void getLivePlot() {  //From https://vaadin.com/docs/v14/ds/components/grid
         patientList.addSelectionListener(selectionEvent -> {
             Optional<Patient> optionalPatient = selectionEvent.getFirstSelectedItem();
             if(optionalPatient.isPresent()){
-               // new RouterLink("Live Plots", LivePlots.class);
                 UI.getCurrent().getPage().executeJavaScript("window.open(\"http://localhost:8080/Live_Plots\", \"_self\");");
             }
 
         });
     }
 
+    //Uses search function and displays the patient being searched
     private void searchPatient() throws Exception {
         patientList.setItems(patientService.search(searchInput.getValue()));
     }

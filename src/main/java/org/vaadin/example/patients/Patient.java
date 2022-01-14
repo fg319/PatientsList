@@ -1,21 +1,7 @@
-package org.vaadin.example.data;
+package org.vaadin.example.patients;
 
-import org.dom4j.tree.AbstractEntity;
-import org.springframework.stereotype.Service;
 
-import javax.persistence.*;
-import javax.validation.constraints.NotEmpty;
-import java.sql.Connection;
-import java.sql.DriverManager;
-import java.sql.ResultSet;
-import java.sql.Statement;
-import java.util.ArrayList;
-import java.util.List;
-
-//@Table(name = "patients")
-@Service
 public class Patient{
-
 
     private Long patientid;
     private Integer id;
