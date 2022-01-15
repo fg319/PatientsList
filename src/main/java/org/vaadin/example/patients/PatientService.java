@@ -11,8 +11,8 @@ import java.util.*;
 public class PatientService {
 
     //This function allows to create an object of class Patient with the data obtained from the postgresql database
-    public Patient createP(String PatientName, String room, String admissionDate, Long PatientId, String Condition){
-        Patient patient = new Patient();
+    public PatientInfo createP(String PatientName, String room, String admissionDate, Long PatientId, String Condition){
+        PatientInfo patient = new PatientInfo();
         patient.setName(PatientName);
         patient.setroom(room);
         patient.setDate(admissionDate);
@@ -22,9 +22,9 @@ public class PatientService {
     }
 
     //This function creates a list of patients created with the data from the database
-    public List<Patient> GetList() throws Exception {
-        Patient patient;
-        ArrayList<Patient>patients1= new ArrayList<>();
+    public List<PatientInfo> GetList() throws Exception {
+        PatientInfo patient;
+        ArrayList<PatientInfo>patients1= new ArrayList<>();
         List<String> room = GetRoom();
         List<String> PatientName = GetName();
         List<String> admissionDate =GetDate();
@@ -40,13 +40,13 @@ public class PatientService {
     }
 
     //This function allows to search for a specific patient with an input from the user
-    public List<Patient> search(String searchInput) throws Exception {        // This fucntion was taken from https://www.baeldung.com/find-list-element-java
-        List<Patient> patients = GetList();
-        ArrayList<Patient> patientUpdated = new ArrayList<>();
+    public List<PatientInfo> search(String searchInput) throws Exception {        // This fucntion was taken from https://www.baeldung.com/find-list-element-java
+        List<PatientInfo> patients = GetList();
+        ArrayList<PatientInfo> patientUpdated = new ArrayList<>();
         if(searchInput == null || searchInput.isEmpty()){
             return patients;
         }else {
-            for (Patient patient : patients){
+            for (PatientInfo patient : patients){
                 if(patient.getName().equals(searchInput)){
                     patientUpdated.add(patient);
                 }

@@ -1,7 +1,7 @@
 package org.vaadin.example.patients;
 
 
-public class Patient{
+public class PatientInfo{
 
     private Long patientid;
     private Integer id;
